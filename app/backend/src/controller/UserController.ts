@@ -16,7 +16,7 @@ export default class UserController {
     if (user) {
       const passwordIsValid = bcrypt.compareSync(password, user.password);
       if (passwordIsValid) {
-        const token = generateToken({ id: user.id });
+        const token = generateToken(email);
         return res.status(200).json({ token });
       }
     }
