@@ -21,11 +21,11 @@ describe('User', () => {
         sinon.stub(Model, 'findOne').resolves({token: 'token'} as any);
         chaiHttpRes = await chai.request(app).post('/login').send({username: 'admin', password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO'});
         expect(chaiHttpRes.status).to.be.equal(400);
-        expect(chaiHttpRes.body.message).to.be.equal('Missing fields');
+        expect(chaiHttpRes.body.message).to.be.equal('All fields must be filled');
     });
     it('should return invalid credentials if user not registrated', async () => {
         sinon.stub(Model, 'findOne').resolves({token: 'token'} as any);
         chaiHttpRes = await chai.request(app).post('/login').send({ email: 'admin@gmail.com', password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO'});
-        expect(chaiHttpRes.body.message).to.be.equal('Invalid credentials');
+        expect(chaiHttpRes.body.message).to.be.equal('Invalid email or password');
     });
 });
