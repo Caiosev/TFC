@@ -22,4 +22,7 @@ export default class UserController {
     }
     return res.status(401).json({ message: 'Invalid email or password' });
   };
+
+  public getRole = async (req: Request, res: Response) => res.status(200)
+    .json({ role: req.body.token.role });
 }
