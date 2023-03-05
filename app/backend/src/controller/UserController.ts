@@ -20,6 +20,6 @@ export default class UserController {
         return res.status(200).json({ token });
       }
     }
-    return res.status(401).json({ message: 'Invalid credentials' });
+    return res.status(400).json({ message: 'Invalid credentials' });
   };
 }
