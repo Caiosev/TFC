@@ -28,5 +28,6 @@ export default class UserController {
     if (user) {
       return res.status(200).json({ role: user.role });
     }
+    return res.status(401).json({ message: 'Token must be valid token' });
   };
 }
