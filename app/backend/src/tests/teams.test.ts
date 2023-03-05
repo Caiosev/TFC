@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Team Model', () => {
+describe('Team', () => {
   let chaiHttpResponse: Response;
 
   before(async () => {
@@ -31,6 +31,11 @@ describe('Team Model', () => {
   it('should GetAll return as expect', async () => {
     chaiHttpResponse = await chai.request(app).get('/teams');
     expect(chaiHttpResponse.body).to.be.eq(getAllTeamsMock);
+    expect(chaiHttpResponse.status).to.be.eq(200);
+  });
+  it('should Get return as expect', async () => {
+    chaiHttpResponse = await chai.request(app).get('/teams/1');
+    expect(chaiHttpResponse.body).to.be.eq(getAllTeamsMock[0]);
     expect(chaiHttpResponse.status).to.be.eq(200);
   });
 });
