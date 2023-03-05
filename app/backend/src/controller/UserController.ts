@@ -3,8 +3,6 @@ import { Request, Response } from 'express';
 import UserService from '../services/UserService';
 import generateToken from '../utils/generateToken';
 
-const emailRegex = /\S+@\S+\.\S+/;
-
 export default class UserController {
   private service: UserService;
 
@@ -15,7 +13,7 @@ export default class UserController {
   public login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await this.service.find(email);
-    if (user || password.length > 6 || emailRegex.test(email)) {
+    if (user) {
       const passwordIsValid = bcrypt.compareSync(password, user?.password || '');
       if (passwordIsValid) {
         const token = generateToken(email);
