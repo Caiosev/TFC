@@ -2,40 +2,44 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
+import { Model } from 'sequelize';
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-import TeamsModel from '../database/models/Team';
+import Team from '../database/models/Team';
 
 import { Response } from 'superagent';
-import { after, before } from 'node:test';
 import { getAllTeamsMock } from './Mocks/Teams';
 
 chai.use(chaiHttp);
 
+
+const Res = [
+  new Team({ id: 1, teamName: 'Team 1'  }),
+  new Team({ id: 2, teamName: 'Team 2' })
+]
+
 const { expect } = chai;
 
 describe('Team', () => {
-  let chaiHttpResponse: Response;
-
-  before(async () => {
-    sinon
-      .stub(TeamsModel, "findAll")
-      .resolves(getAllTeamsMock as TeamsModel[]);
-  });
-
-  after(()=>{
-    (TeamsModel.findAll as sinon.SinonStub).restore();
-  })
+  beforeEach(sinon.restore);
 
   it('should GetAll return as expect', async () => {
-    chaiHttpResponse = await chai.request(app).get('/teams');
-    expect(chaiHttpResponse.body).to.be.eq(getAllTeamsMock);
-    expect(chaiHttpResponse.status).to.be.eq(200);
+    sinon.stub(Model, 'findAll').resolves(Res);
+
+    const result = await chai.request(app).get('/teams');
+
+    expect(result.status).to.be.equal(200);
+    expect(result.body).to.deep.equal(getAllTeamsMock);
+
   });
+
   it('should Get return as expect', async () => {
-    chaiHttpResponse = await chai.request(app).get('/teams/1');
-    expect(chaiHttpResponse.body).to.be.eq(getAllTeamsMock[0]);
-    expect(chaiHttpResponse.status).to.be.eq(200);
+    sinon.stub(Model, 'findByPk').resolves(Res[0]);
+
+    const result = await chai.request(app).get('/teams/1');
+
+    expect(result.status).to.be.equal(200);
+    expect(result.body).to.deep.equal(getAllTeamsMock[0]);
   });
+  
 });
