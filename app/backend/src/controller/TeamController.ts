@@ -2,19 +2,24 @@ import { Request, Response } from 'express';
 import TeamService from '../services/TeamService';
 
 export default class TeamController {
-  private _service: TeamService = new TeamService();
+  private service: TeamService;
 
-  async getAll(_req: Request, res: Response) {
-    const teams = await this._service.getAll();
-    return res.status(200).json(teams);
+  constructor() {
+    this.service = new TeamService();
   }
 
-  async get(req: Request, res: Response) {
+  public getAll = async (_req: Request, res: Response) => {
+    console.log('getAll');
+    const teams = await this.service.getAll();
+    return res.status(200).json(teams);
+  };
+
+  public get = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
-    const team = await this._service.get(id);
+    const team = await this.service.get(id);
     if (team) {
       return res.status(200).json(team);
     }
     return res.status(404).json({ message: 'Team not found' });
-  }
+  };
 }
