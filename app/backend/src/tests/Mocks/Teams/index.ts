@@ -1,4 +1,4 @@
-const getAllTeamsMock = [
+export const getAllTeamsMock = [
     {
         id: 1,
         name: 'Team 1',

@@ -9,6 +9,7 @@ import TeamsModel from '../database/models/Team';
 
 import { Response } from 'superagent';
 import { after, before } from 'node:test';
+import { getAllTeamsMock } from './Mocks/Teams';
 
 chai.use(chaiHttp);
 
