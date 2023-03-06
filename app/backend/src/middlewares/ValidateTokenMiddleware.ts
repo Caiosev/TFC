@@ -18,7 +18,6 @@ export default async function validateTokenMiddleware(
     if (!decoded) {
       return res.status(401).json({ message: 'Token must be valid token' });
     }
-    req.body.email = decoded.data.email;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Token must be valid token' });
