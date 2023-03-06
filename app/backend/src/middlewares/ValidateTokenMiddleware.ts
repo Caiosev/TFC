@@ -18,6 +18,7 @@ export default async function validateTokenMiddleware(
     if (!decoded) {
       return res.status(401).json({ message: 'Token must be valid token' });
     }
+    req.body.user = decoded;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Token must be valid token' });

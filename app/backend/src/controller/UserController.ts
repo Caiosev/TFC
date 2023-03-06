@@ -24,7 +24,7 @@ export default class UserController {
   };
 
   public getRole = async (req: Request, res: Response) => {
-    const user = await this.service.find(req.body.email);
+    const user = await this.service.find(req.body.user.data.email);
     if (user) {
       return res.status(200).json({ role: user.role });
     }
