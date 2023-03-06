@@ -16,11 +16,11 @@ export default async function validateTokenMiddleware(
   try {
     const decoded = await jwt.verify(token, key) as jwt.JwtPayload;
     if (!decoded) {
-      return res.status(401).json({ message: 'Token must be valid token' });
+      return res.status(401).json({ message: 'Token must be a valid token' });
     }
     req.body.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Token must be valid token' });
+    return res.status(401).json({ message: 'Token must be a valid token' });
   }
 }
