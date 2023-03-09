@@ -1,10 +1,12 @@
 import { Router } from 'express';
+import validateTokenMiddleware from '../middlewares/ValidateTokenMiddleware';
 import MatchController from '../controller/MatchController';
 
 const router = Router();
 
-const userController = new MatchController();
+const matchController = new MatchController();
 
-router.get('/', userController.getAllMatches);
+router.get('/', matchController.getAllMatches);
+router.patch('/:id', validateTokenMiddleware, matchController.update);
 
 export default router;

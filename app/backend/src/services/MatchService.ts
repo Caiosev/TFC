@@ -21,4 +21,11 @@ export default class TeamService {
       },
     );
   }
+
+  public async setFinished(id: string) {
+    const match = await this.matchModel.findByPk(id);
+    if (match) {
+      await this.matchModel.update({ inProgress: false }, { where: { id } });
+    }
+  }
 }

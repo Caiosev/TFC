@@ -13,4 +13,10 @@ export default class ControllerMatch {
     const result = await this.service.getAll(!!inProgress || null);
     return res.status(200).json(result);
   };
+
+  public update = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await this.service.setFinished(id);
+    return res.status(200).json({ message: 'Finished' });
+  };
 }
