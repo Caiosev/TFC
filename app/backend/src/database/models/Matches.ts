@@ -9,6 +9,7 @@ class Match extends Model {
   declare password: string;
   declare email: string;
   declare role: string;
+  declare inProgress: boolean;
 }
 
 Match.init({

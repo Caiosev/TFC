@@ -10,7 +10,8 @@ export default class ControllerMatch {
 
   public getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
-    const result = await this.service.getAll(!!inProgress || null);
+    console.log(`query ${inProgress}`);
+    const result = await this.service.getAll(inProgress as string || null);
     return res.status(200).json(result);
   };
 
