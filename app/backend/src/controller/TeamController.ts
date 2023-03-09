@@ -9,7 +9,6 @@ export default class TeamController {
   }
 
   public getAll = async (_req: Request, res: Response) => {
-    console.log('getAll');
     const teams = await this.service.getAll();
     return res.status(200).json(teams);
   };

@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import MatchService from '../services/MatchService';
 
-export default class ControllerTeams {
-  private _service: MatchService;
+export default class ControllerMatch {
+  private service: MatchService;
 
-  constructor(service: MatchService) {
-    this._service = service;
+  constructor() {
+    this.service = new MatchService();
   }
 
-  async getAllMatches(req: Request, res: Response) {
+  public getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
-    const result = await this._service.getAll(!!inProgress || null);
+    const result = await this.service.getAll(!!inProgress || null);
     return res.status(200).json(result);
-  }
+  };
 }
