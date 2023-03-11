@@ -5,10 +5,10 @@ import Team from './Team';
 
 class Match extends Model {
   declare id: number;
-  declare username: string;
-  declare password: string;
-  declare email: string;
-  declare role: string;
+  declare homeTeamId: string;
+  declare awayTeamId: string;
+  declare homeTeamGoals: string;
+  declare awayTeamGoals: string;
   declare inProgress: boolean;
 }
 

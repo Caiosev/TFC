@@ -25,4 +25,15 @@ export default class ControllerMatch {
     await this.service.update(id, req.body);
     return res.status(200).json({ message: 'Finished' });
   };
+
+  public create = async (req: Request, res: Response) => {
+    if (req.body.homeTeamId === req.body.awayTeamId) {
+      return res.status(422).json(
+        { message: 'It is not possible to create a match with two equal teams' },
+      );
+    }
+
+    const result = await this.service.create(req.body);
+    return res.status(200).json(result);
+  };
 }

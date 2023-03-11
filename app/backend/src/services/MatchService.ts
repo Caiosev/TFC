@@ -36,4 +36,20 @@ export default class TeamService {
       await this.matchModel.update({ ...data }, { where: { id } });
     }
   }
+
+  public async create(data: MatchModel) {
+    if (data) {
+      try {
+        const team1 = await this.matchModel.findByPk(data?.homeTeamId);
+        const team2 = await this.matchModel.findByPk(data?.awayTeamId);
+        if (!team1 || !team2) {
+          return { message: 'There is no team with such id!' };
+        }
+      } catch (e) {
+        return { message: 'There is no team with such id!' };
+      }
+      const match = await this.matchModel.create({ ...data });
+      return match;
+    }
+  }
 }
