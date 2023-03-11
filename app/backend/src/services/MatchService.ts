@@ -5,7 +5,6 @@ export default class TeamService {
   private matchModel = MatchModel;
 
   public async getAll(isInProgress: string | null): Promise<MatchModel[] | undefined> {
-    console.log(isInProgress);
     const m = await this.matchModel.findAll(
       {
         where: { inProgress: !!isInProgress },
