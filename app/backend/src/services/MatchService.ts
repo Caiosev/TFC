@@ -7,7 +7,6 @@ export default class TeamService {
   public async getAll(isInProgress: string | null): Promise<MatchModel[] | undefined> {
     const m = await this.matchModel.findAll(
       {
-        where: { inProgress: !!isInProgress },
         include: [
           { model: TeamsModel, as: 'homeTeam' },
           { model: TeamsModel, as: 'awayTeam' },
