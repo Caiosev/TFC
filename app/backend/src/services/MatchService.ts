@@ -28,4 +28,12 @@ export default class TeamService {
       await this.matchModel.update({ inProgress: false }, { where: { id } });
     }
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public async update(id: string, data: any) {
+    const match = await this.matchModel.findByPk(id);
+    if (match) {
+      await this.matchModel.update({ ...data }, { where: { id } });
+    }
+  }
 }
