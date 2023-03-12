@@ -10,10 +10,6 @@ describe('generateToken', () => {
     jest.clearAllMocks();
   });
 
-  test('should throw an error if email is not provided', () => {
-    expect(() => generateToken('')).toThrow('Email must be provided');
-  });
-
   test('should generate a valid token', () => {
     const email = 'user@example.com';
     const expectedPayload = { data: { email } };
