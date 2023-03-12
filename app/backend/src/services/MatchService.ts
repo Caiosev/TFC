@@ -46,10 +46,10 @@ export default class MatchService {
         const team1 = await this.teamService.get(Number(data?.homeTeamId));
         const team2 = await this.teamService.get(Number(data?.awayTeamId));
         if (!team1 || !team2) {
-          return { message: ' 1There is no team with such id!' };
+          return { message: 'There is no team with such id!', error: true };
         }
       } catch (e) {
-        return { message: '2There is no team with such id!' };
+        return { message: 'There is no team with such id!', error: true };
       }
       const match = await this.matchModel.create({ ...data, inProgress: true });
       return match;

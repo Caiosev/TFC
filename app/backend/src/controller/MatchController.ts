@@ -33,7 +33,9 @@ export default class ControllerMatch {
       );
     }
 
-    const result = await this.service.create(req.body);
-    return res.status(200).json(result);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: any = await this.service.create(req.body);
+    if (result?.error) return res.status(404).json(result.message);
+    return res.status(201).json(result);
   };
 }
