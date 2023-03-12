@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable max-lines-per-function */
-/* eslint-disable no-unused-vars */
-/* eslint-disable max-len */
-interface Statistic {
+interface TeamStats {
   name: string;
   totalPoints: number;
   totalGames: number;
@@ -13,52 +9,65 @@ interface Statistic {
   goalsOwn: number;
 }
 
-function calculateStatistics(matches: any[]): Statistic[] {
-  const teams: { [key: number]: Statistic } = {};
-
-  matches.forEach((match) => {
-    console.log(match);
-    const homeTeam = teams[match.homeTeamId] || { name: match.homeTeam.teamName, totalPoints: 0, totalGames: 0, totalVictories: 0, totalDraws: 0, totalLosses: 0, goalsFavor: 0, goalsOwn: 0 };
-    const awayTeam = teams[match.awayTeamId] || { name: match.awayTeam.teamName, totalPoints: 0, totalGames: 0, totalVictories: 0, totalDraws: 0, totalLosses: 0, goalsFavor: 0, goalsOwn: 0 };
-
-    homeTeam.totalGames += 1;
-    homeTeam.goalsFavor += match.homeTeamGoals;
-    homeTeam.goalsOwn += match.awayTeamGoals;
-    awayTeam.totalGames += 1;
-    awayTeam.goalsFavor += match.awayTeamGoals;
-    awayTeam.goalsOwn += match.homeTeamGoals;
-
-    if (match.homeTeamGoals > match.awayTeamGoals) {
-      homeTeam.totalPoints += 3;
-      homeTeam.totalVictories += 1;
-      awayTeam.totalLosses += 1;
-    } else if (match.homeTeamGoals < match.awayTeamGoals) {
-      awayTeam.totalPoints += 3;
-      awayTeam.totalVictories += 1;
-      homeTeam.totalLosses += 1;
-    } else {
-      homeTeam.totalPoints += 1;
-      homeTeam.totalDraws += 1;
-      awayTeam.totalPoints += 1;
-      awayTeam.totalDraws += 1;
-    }
-
-    teams[match.homeTeamId] = homeTeam;
-    teams[match.awayTeamId] = awayTeam;
-  });
-
-  const output: Statistic[] = Object.values(teams).map((team) => ({
-    name: team.name,
-    totalPoints: team.totalPoints,
-    totalGames: team.totalGames,
-    totalVictories: team.totalVictories,
-    totalDraws: team.totalDraws,
-    totalLosses: team.totalLosses,
-    goalsFavor: team.goalsFavor,
-    goalsOwn: team.goalsOwn,
-  }));
-
-  return output;
+interface UpdateTeamStatsParams {
+  teamId: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  teamName: string;
+  teams: Record<number, TeamStats>;
 }
 
-export default calculateStatistics;
+function createNewTeamStats(teamName: string): TeamStats {
+  return {
+    name: teamName,
+    totalPoints: 0,
+    totalGames: 0,
+    totalVictories: 0,
+    totalDraws: 0,
+    totalLosses: 0,
+    goalsFavor: 0,
+    goalsOwn: 0,
+  };
+}
+
+function updateTeamStats(params: UpdateTeamStatsParams): void {
+  const { teamId, goalsFor, goalsAgainst, teamName, teams } = params;
+  const team = teams[teamId] ?? createNewTeamStats(teamName);
+  team.totalGames += 1;
+  team.goalsFavor += goalsFor;
+  team.goalsOwn += goalsAgainst;
+  team.name = teamName;
+
+  if (goalsFor > goalsAgainst) {
+    team.totalVictories += 1;
+    team.totalPoints += 3;
+  } else if (goalsFor < goalsAgainst) {
+    team.totalLosses += 1;
+  } else {
+    team.totalDraws += 1;
+    team.totalPoints += 1;
+  }
+  teams[teamId] = { ...team };
+}
+
+export default function calculateTeamStats(matches: any[]): TeamStats[] {
+  const teams: Record<number, TeamStats> = {};
+  matches.forEach((match) => {
+    updateTeamStats({
+      teamId: match.homeTeamId,
+      goalsFor: match.homeTeamGoals,
+      goalsAgainst: match.awayTeamGoals,
+      teamName: match.homeTeam.dataValues.teamName,
+      teams,
+    });
+    updateTeamStats({
+      teamId: match.awayTeamId,
+      goalsFor: match.awayTeamGoals,
+      goalsAgainst: match.homeTeamGoals,
+      teamName: match.awayTeam.dataValues.teamName,
+      teams,
+    });
+  });
+
+  return Object.values(teams);
+}

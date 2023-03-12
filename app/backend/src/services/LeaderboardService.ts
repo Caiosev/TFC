@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import calculateStatistics from '../utils/calculateStatistics';
+import calculateTeamStats from '../utils/calculateStatistics';
 import MatchModel from '../database/models/Matches';
 import TeamModel from '../database/models/Team';
 
@@ -14,6 +14,6 @@ export default class LeaderboardService {
       ],
       where: { inProgress: false } });
     const matches = res.map((e) => e.dataValues);
-    return calculateStatistics(matches);
+    return calculateTeamStats(matches);
   }
 }
