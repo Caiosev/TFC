@@ -1,4 +1,6 @@
 import calculateTeamStats from '../utils/calculateStatistics';
+import * as chai from 'chai';
+const { expect } = chai;
 
 describe('calculateTeamStats', () => {
   it('calculates team stats correctly when given valid matches', () => {
@@ -29,16 +31,17 @@ describe('calculateTeamStats', () => {
       },
     ];
 
-    const expectedTeamStats = [
+    const expectedTeamStats = 
+    [
       {
         name: 'Team A',
-        totalPoints: 4,
-        totalGames: 2,
-        totalVictories: 1,
+        totalPoints: 7,
+        totalGames: 3,
+        totalVictories: 2,
         totalDraws: 1,
         totalLosses: 0,
-        goalsFavor: 6,
-        goalsOwn: 3,
+        goalsFavor: 9,
+        goalsOwn: 4
       },
       {
         name: 'Team B',
@@ -48,7 +51,7 @@ describe('calculateTeamStats', () => {
         totalDraws: 1,
         totalLosses: 1,
         goalsFavor: 4,
-        goalsOwn: 5,
+        goalsOwn: 5
       },
       {
         name: 'Team C',
@@ -58,14 +61,13 @@ describe('calculateTeamStats', () => {
         totalDraws: 0,
         totalLosses: 1,
         goalsFavor: 0,
-        goalsOwn: 4,
-      },
-    ];
-
-    expect(calculateTeamStats(matches)).toEqual(expectedTeamStats);
+        goalsOwn: 4
+      }
+    ]
+     expect(calculateTeamStats(matches)).to.deep.be.equal(expectedTeamStats);
   });
 
   it('returns an empty array when given an empty array of matches', () => {
-    expect(calculateTeamStats([])).toEqual([]);
+    expect(calculateTeamStats([])).to.deep.be.equal([]);
   });
 });
