@@ -9,7 +9,11 @@ export default class UserController {
   }
 
   public home = async (req: Request, res: Response) => {
-    const leaderboard = await this.service.rank();
-    return res.status(200).json(Object.values(leaderboard));
+    try {
+      const leaderboard = await this.service.rank();
+      return res.status(200).json(Object.values(leaderboard));
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal server error' });
+    }
   };
 }
