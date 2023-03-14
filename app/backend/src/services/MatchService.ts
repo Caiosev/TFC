@@ -32,7 +32,6 @@ export default class MatchService {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update(id: string, data: MatchModel) {
     const match = await this.matchModel.findByPk(id);
     if (match) {

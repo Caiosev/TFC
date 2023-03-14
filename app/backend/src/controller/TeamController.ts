@@ -9,16 +9,28 @@ export default class TeamController {
   }
 
   public getAll = async (_req: Request, res: Response) => {
-    const teams = await this.service.getAll();
-    return res.status(200).json(teams);
+    try {
+      const teams = await this.service.getAll();
+      return res.status(200).json(teams);
+    } catch (error) {
+      return res.status(500).json({ message: 'Unexpected error' });
+    }
   };
 
   public get = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
-    const team = await this.service.get(id);
-    if (team) {
-      return res.status(200).json(team);
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ message: 'Bad request' });
     }
-    return res.status(404).json({ message: 'Team not found' });
+
+    try {
+      const team = await this.service.get(id);
+      if (team) {
+        return res.status(200).json(team);
+      }
+      return res.status(404).json({ message: 'Team not found' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Unexpected error' });
+    }
   };
 }
